@@ -36,7 +36,3 @@ O projeto não é apenas um gráfico, ele segue um fluxo lógico de dados:
 * *Análise:* Pandas & Numpy
 * *Visualização:* Streamlit & Matplotlib
 
-
- 👩‍💻 Autora & Contato
-Este projeto faz parte do meu portfólio de Análise de Dados. Estou disponível para oportunidades na área.
-
