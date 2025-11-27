@@ -1,6 +1,6 @@
  Dashboard de Vendas - Loja de Informática
 
- 🔴 [CLIQUE AQUI PARA VER O PROJETO ONLINE](COLOQUE_SEU_LINK_DO_STREAMLIT_AQUI)
+ 🔴 [CLIQUE AQUI PARA VER O PROJETO ONLINE]()
 
 ---
 
