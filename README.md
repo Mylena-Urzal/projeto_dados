@@ -1,6 +1,6 @@
  Dashboard de Vendas - Loja de Informática
 
- 🔴 [CLIQUE AQUI PARA VER O PROJETO ONLINE]()
+ 🔴 [CLIQUE AQUI PARA VER O PROJETO ONLINE](http://localhost:8501/)
 
 ---
 
