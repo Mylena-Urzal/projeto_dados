@@ -5,7 +5,7 @@ import streamlit as st
 import pandas as pd
 import sqlite3
 
-# --- 1. CARREGAMENTO E PREPARAÇÃO ---
+# 1. CARREGAMENTO E PREPARAÇÃO 
 conn = sqlite3.connect("loja_vendas.db")
 df = pd.read_sql_query("SELECT * FROM sales", conn, parse_dates=["date"])
 conn.close()
@@ -14,7 +14,7 @@ conn.close()
 st.set_page_config(page_title="Dashboard de Vendas", layout="wide")
 st.title("📊 Dashboard de Vendas — Loja de Informática")
 
-# Correção: Renomeia 'seller_name' para 'vendedor' se necessário, para padronizar
+# Correção
 if 'seller_name' in df.columns:
     df.rename(columns={'seller_name': 'vendedor'}, inplace=True)
 
@@ -22,10 +22,9 @@ if 'seller_name' in df.columns:
 df['date'] = pd.to_datetime(df['date'])
 df['Ano'] = df['date'].dt.year
 df['Mês'] = df['date'].dt.month
-# Usa %b para abreviação do mês (Jan, Fev, Mar)
 df['Mês_Nome'] = df['date'].dt.strftime('%b') 
 
-# --- 2. BARRA LATERAL (FILTROS) ---
+# 2. BARRA LATERAL (FILTROS)
 st.sidebar.header("Filtros")
 
 # Filtro 1: Ano
@@ -50,7 +49,7 @@ vendedores_selecionados = st.sidebar.multiselect(
     default=vendedores_disponiveis
 )
 
-# --- 3. APLICAR FILTROS (Lógica Principal) ---
+# 3. APLICAR FILTROS (Lógica Principal)
 
 # DF_FILTRADO: Obedece a TUDO (Ano, Mês e Vendedor) -> Para métricas e gráficos do ano atual
 df_filtrado = df[
@@ -65,13 +64,13 @@ df_comparacao = df[
     (df['vendedor'].isin(vendedores_selecionados))
 ]
 
-# --- 4. EXIBIÇÃO DO DASHBOARD ---
+# DASHBOARD
 
 # Se o filtro zerar os dados, avisa
 if df_filtrado.empty:
     st.warning("Nenhum dado encontrado com esses filtros.")
 else:
-    # --- Métricas (KPIs) ---
+    #  Métricas (KPIs) 
     col1, col2 = st.columns(2)
     with col1:
         st.metric("Faturamento Total", f"R$ {df_filtrado.total.sum():,.2f}")
@@ -89,13 +88,13 @@ else:
         st.line_chart(df_filtrado.groupby("date").total.sum())
 
     with col2_graficos:
-        # --- Gráfico 2: Vendas Mensais por Vendedor (Novo Gráfico) ---
+        #  Gráfico 2: Vendas Mensais por Vendedor (Novo Gráfico) 
         st.subheader(f"📈 Vendas Mensais por Vendedor - {ano_selecionado}")
         
         # Agrupamento: Soma o total de vendas por Mês e Vendedor
         df_mensal_vendedor = df_filtrado.groupby(['Mês', 'Mês_Nome', 'vendedor'])['total'].sum().reset_index()
         
-        # Pivotamento: Coloca cada vendedor em uma coluna
+        # Pivot; Coloca cada vendedor em uma coluna
         df_pivot_vendedor = df_mensal_vendedor.pivot_table(
             index='Mês_Nome',
             columns='vendedor',
@@ -112,12 +111,12 @@ else:
         else:
             st.info("Nenhum dado mensal para os vendedores selecionados.")
 
-    # --- Gráfico 3: Comparação Ano a Ano (Faturamento Geral) ---
+    # Gráfico 3: Comparação Ano a Ano (Faturamento Geral)
     st.markdown("---")
     st.header("📈 Comparativo: Ano a Ano")
     st.caption("Este gráfico mostra o faturamento mensal total (de todos os vendedores selecionados) em DIFERENTES ANOS.")
 
-    # Prepara os dados de comparação
+    #  comparação
     df_mensal_yoy = df_comparacao.groupby(['Ano', 'Mês', 'Mês_Nome'])['total'].sum().reset_index()
     
  # Pivot (Linhas = Meses, Colunas = Anos)
@@ -136,7 +135,7 @@ else:
     else:
         st.info("Dados insuficientes para comparação anual.")
 
-    # - Tabela
+    #  Tabela
     st.markdown("---")
     with st.expander("Ver Tabela Detalhada"):
         st.dataframe(df_filtrado)
