@@ -15,7 +15,7 @@ sales["year_month"] = sales["date"].dt.to_period("M")
 
 # MEDIA ANUAL POR VENDEDOR
 
-ias_ano = {2024: 366, 2025: 365}
+dias_ano = {2024: 366, 2025: 365}
 
 annual = sales.groupby(["seller_name", "year"]).total.sum().reset_index()
 annual["dias"] = annual["year"].apply(lambda x: dias_ano[x])
